@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use XML::LibXML;
 #use XML::XPath;
 #use XML::XPath::XMLParser;
 use XML::Simple;
@@ -20,10 +21,14 @@ my $data = $xml->XMLin($curl);
 
 #my $zaba = system("curl http://api.lib.harvard.edu/v2/items.xml?limit=0&title=$series");
 
-say $data;
+#say $data;
 
 #my $xp = XML::XPath->new(ioref => *DATA);
 
 #my $count = $xp->('/results/pagination/numFound');
 
 #say $zaba;
+
+foreach my $numFound ($data->findnodes('/results/pagination/numFound')) {
+    print $numFound->to_literal, "\n" 
+  }
