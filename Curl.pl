@@ -10,6 +10,8 @@ use File::Find;
 # create object
 my $xml = new XML::Simple;
 
+my $xpath=999;
+
 my $series = 'Harvard%20College%20Library%20preservation%20digitization%20pro*';
 
 # WORKS my $curl=`curl http://api.lib.harvard.edu/v2/items.xml?limit=0&title=Harvard%20College%20Library%20preservation%20digitization%20pro*`;
@@ -17,7 +19,8 @@ my $series = 'Harvard%20College%20Library%20preservation%20digitization%20pro*';
 my $curl=`curl http://api.lib.harvard.edu/v2/items.xml?limit=0&title=$series`;
 
 # read XML file
-my $data = $xml->XMLin($curl);
+my $node = $xml->XMLin($curl);
+print $curl;
 
 #my $zaba = system("curl http://api.lib.harvard.edu/v2/items.xml?limit=0&title=$series");
 
@@ -29,6 +32,8 @@ my $data = $xml->XMLin($curl);
 
 #say $zaba;
 
-foreach my $numFound ($data->findnodes('/results/pagination/numFound')) {
-    print $numFound->to_literal, "\n" 
-  }
+#print $node->findvalue( $xpath );
+
+#foreach my $numFound ($data->findnodes('/results/pagination/numFound')) {
+#    print $numFound->to_literal, "\n" 
+#  }
