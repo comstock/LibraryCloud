@@ -1,0 +1,131 @@
+#!/usr/bin/python
+import pycurl
+import json
+import os, sys
+#import math
+
+"""  
+        /* 
+         * set variables
+         */
+"""
+from StringIO import StringIO
+
+limit_count = 0 # set zero for first run
+
+fileExtention = "json" # do not change. json data is needed to compute # of data request calls.
+# fileNameStem = "OCP_ExpeditionsDiscoveries"
+fileNameStem = "LAP_xml"
+howMany = "_COUNT."
+allPlease = "_ALL."
+fnCount = fileNameStem + howMany + fileExtention
+fnAll = fileNameStem + allPlease + fileExtention
+seq = 1 # sequence number of output file
+print fnAll
+
+maxLimit = 25
+starting_record = 1
+# series = "Open%20Collections%20Program%20at%20Harvard%20University.%20Expeditions%20and%20discoveries"
+series = "Latin%20American%20pamphlet%20digital%20project%20at%20Harvard%20University"
+# series = "Harvard%20College%20Library%20preservation%20digitization%20pro*"
+libcloud_api_stem = "http://api.lib.harvard.edu/v2/items."
+libcloud_call = libcloud_api_stem + fileExtention + "?limit=" + str(limit_count) + "&start=" + str(starting_record) + "&title=" + series
+
+# print "Max limit = " + str(maxLimit) # Dude, you cannot concatenate int(s) and str(s). I had to convert maxLimit to a string.
+# print "API stem: " + libcloud_api_stem
+# print "Entire URL: " + libcloud_call
+
+""" # We don't want to delete the file if we plan on writing out a sequence of files
+if os.path.isfile(fnAll):
+    os.remove (fnAll)
+""" # End of commented out file delete section
+
+# As long as the file is opened in binary mode, both Python 2 and Python 3
+# can write response body to it without decoding.
+
+# print str(fileName) + '_COUNT.' + str(fileExtention)
+# with open (fnCount + fileExtention), 'w') as f:
+
+with open (fnCount,'w') as f:
+    c = pycurl.Curl()
+    c.setopt(c.URL, libcloud_call)
+    c.setopt(c.WRITEDATA, f)
+    c.perform()
+    c.close()
+    
+"""
+        /*
+         * Read records count into variable
+         */
+"""
+# Debug: Force RecCount to a small number
+# copy file content into a string var
+# jsonData = open('PresResCount.' + str(fileExtention), 'r')
+
+# with open('data.json') as data_file:    
+with open(fnCount) as data_file:    
+    data = json.load(data_file)
+    recCount = data["pagination"]["numFound"]
+    # print recCount
+    
+# End Debug comment
+
+"""        
+        /*
+         * Calculate number of retrievals needed to collect all records
+         */
+""" 
+# recCount = 255 # DEBUG -- comment out
+# numPasses_int = 1  # DEBUG -- comment out
+
+numPasses = recCount / maxLimit
+remainder = recCount % maxLimit
+numPasses_int = int(numPasses)
+limit_count = maxLimit
+
+# fileExtention = "json"; # reset to change the format of records (dc, xml, json)
+
+""" File opening moved to loop to accommodate sequence
+f = open ((fnAll), 'a') # note, open for appending
+c = pycurl.Curl()
+""" # End of commented section
+
+fileExtention = "xml" # reset to change the format of records (dc, xml, json)
+# Debug libcloud_call = libcloud_api_stem + fileExtention + "?limit=" + str(limit_count) + "&start=" + str(starting_record) + "&title=" + series
+
+""" Debug
+c.setopt(c.URL, libcloud_call)
+c.setopt(c.WRITEDATA, f)
+# c.perform()
+# c.close()
+""" #end Debug
+
+i = 1
+
+print "Limit Count = " + str(limit_count)
+print int(numPasses)
+print int(remainder)
+
+inLoop_i = 1
+
+for i in range(i,numPasses + 1,1):
+    outFile = fnAll + "_" + str(seq)
+    libcloud_call = libcloud_api_stem + fileExtention + "?limit=" + str(limit_count) + "&start=" + str(starting_record) + "&title=" + series
+    print outFile
+    if inLoop_i == 1 :
+        starting_record = 1
+        # seq = seq + 1
+    else:
+        starting_record = ((inLoop_i - 1) * maxLimit)
+    y = open (outFile, 'w')
+    c = pycurl.Curl()
+    c.setopt(c.URL, libcloud_call)
+    c.setopt(c.WRITEDATA, y)
+    c.perform()
+    # c.close
+    seq = (seq + 1)
+    print "Loop number " + str(inLoop_i)
+    inLoop_i = (inLoop_i + 1) #; print "Loop number " + str(inLoop_i)
+
+print "Starting record = " + str(starting_record)
+print "Loop number " + str(inLoop_i)
