@@ -1,0 +1,114 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+import codecs
+import os, sys
+reload(sys)  # Reload does the trick!
+sys.setdefaultencoding('UTF8')
+
+import xml.etree.ElementTree as etree
+import xml.etree
+import re
+
+
+
+# fileName = '/home/comstock/python/LAP_xml_ALL.json_5'
+fileName = '/home/comstock/python/mods_test.xml' # Removed "mods:" from XML source file.
+
+
+import lxml.etree as le
+"""
+with open(fileName,'r') as f:
+    doc=le.parse(f)
+    for elem in doc.xpath('//*[attribute::lang]'):
+        if elem.attrib['lang']=='en':
+            elem.attrib.pop('lang')
+        else:
+            parent=elem.getparent()
+            parent.remove(elem)
+    print(le.tostring(doc))
+
+
+
+tree = etree.parse(fileName)
+root = tree.getroot()
+
+print root
+"""
+
+with open(fileName,'r') as f:
+    doc=le.parse(f)
+    for elem in doc.xpath('//*[mods]'):
+        if elem.attrib['lang']=='en':
+            elem.attrib.pop('lang')
+        else:
+            parent=elem.getparent()
+            parent.remove(elem)
+    print(le.tostring(doc))
+
+
+
+tree = etree.parse(fileName)
+root = tree.getroot()
+
+print root
+
+# WORKS with test entries = tree.findall('.//{http://api.lib.harvard.edu/v2/item}title')
+entries = tree.findall('.//{http://api.lib.harvard.edu/v2/item}item')
+
+# entries = re.findall('title', fileName)
+# print re.findall('[*"contra"*]', fileName)
+
+print "Entries = " + str(len(entries))
+
+# WORKS with test titles = tree.findall('.//{http://api.lib.harvard.edu/v2/item}title')
+titles = tree.findall('.//{http://api.lib.harvard.edu/v2/item}title')
+
+print "Titles = " + str(len(titles))
+
+print titles[1].text
+print titles[0].text #unicode error
+ 
+# DEBUG print sys.getdefaultencoding()
+
+# How do we write out XML, or JSON, or CSV? See: http://luisartola.com/software/2010/easy-xml-in-python/
+
+
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import SubElement
+
+
+# <results/>
+results = Element( 'results' )
+
+# <results><item/>
+item = SubElement( results, 'item' )
+
+# <results><item><title/>
+title = SubElement( item, 'title' )
+
+# <results><item><creator/>
+creator = SubElement( item, 'creator' )
+
+# <results><item><creator><personal/>
+SubElement( creator, 'name', type='personal' )
+SubElement( creator, 'name', type='corporate' )
+
+# <results><item><placePublication/>
+placePublication = SubElement( item, 'placePublication' )
+
+# <results><item><placePublication><placeTerm/>
+SubElement( placePublication, 'placeTerm', type='authority' )
+SubElement( placePublication, 'placeTerm', type='text' )
+
+# <results><item><placePublication><languageTerm/>
+languageTerm = SubElement( item, 'languageTerm', type='authority')
+
+# <results><item><url/>
+url = SubElement( item, 'url' )
+
+output_file = open( 'comstock_records.xml', 'w' )
+output_file.write( '<?xml version="1.0"?>' )
+output_file.write( ElementTree.tostring( results ) )
+output_file.close()
+
