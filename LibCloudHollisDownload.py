@@ -11,13 +11,15 @@ fileExtention = "xml"
 libcloud_call = ""
 SingleID = "XXX"
 libcloud_stem = "http://api.lib.harvard.edu/v2/items."
-hollisRecordsStem = "/home/comstock/Documents/python/data/hollisRecords" + "_"
+#hollisRecordsStem = "/home/comstock/Documents/python/data/hollisRecords" + "_"
+hollisRecordsStem = "/home/comstock/Documents/python/data/"
 
-with open("/home/comstock/Documents/python/data/hollisIDs.txt",'r') as hollisList:
+with open("/home/comstock/Documents/python/data/LocalGaz.txt",'r') as hollisList:
     for line in hollisList:
         #print line
         SingleID = line
         libcloud_call = libcloud_stem + fileExtention + "?recordIdentifier=" + SingleID
+        SingleID = SingleID.rstrip()
         libcloud_call = libcloud_call.rstrip()
         hollisRecordsFile = hollisRecordsStem + SingleID + "." + fileExtention
         #print libcloud_call
