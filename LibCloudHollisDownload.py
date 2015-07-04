@@ -8,13 +8,14 @@ import re
 from StringIO import StringIO
 
 fileExtention = "xml"
+inputFilename = "/home/comstock/Documents/python/data/LocalGaz.txt"
 libcloud_call = ""
 SingleID = "XXX"
 libcloud_stem = "http://api.lib.harvard.edu/v2/items."
 #hollisRecordsStem = "/home/comstock/Documents/python/data/hollisRecords" + "_"
 hollisRecordsStem = "/home/comstock/Documents/python/data/"
 
-with open("/home/comstock/Documents/python/data/LocalGaz.txt",'r') as hollisList:
+with open(inputFilename,'r') as hollisList:
     for line in hollisList:
         #print line
         SingleID = line
