@@ -4,16 +4,17 @@ import pycurl
 #import codecs
 import os, sys
 import re
+import time
 
 from StringIO import StringIO
 
 fileExtention = "xml"
-inputFilename = "/home/comstock/Documents/python/data/LocalGaz.txt"
+inputFilename = "/home/comstock/Documents/python/data/HYL_rubbings._20150707_hollis_ids.tsv"
 libcloud_call = ""
 SingleID = "XXX"
 libcloud_stem = "http://api.lib.harvard.edu/v2/items."
 #hollisRecordsStem = "/home/comstock/Documents/python/data/hollisRecords" + "_"
-hollisRecordsStem = "/home/comstock/Documents/python/data/"
+hollisRecordsStem = "/home/comstock/Documents/python/data/output/libCloud/"
 
 with open(inputFilename,'r') as hollisList:
     for line in hollisList:
@@ -29,4 +30,5 @@ with open(inputFilename,'r') as hollisList:
         c.setopt(c.URL, libcloud_call)
         c.setopt(c.WRITEDATA, f)
         c.perform()
-        c.close()
+        time.sleep(.300) # Added this brief pause to prevent timeouts. Not sure it is necessary.
+        c.close()
