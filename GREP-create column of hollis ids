@@ -1,0 +1,6 @@
+# http://api.lib.harvard.edu/v2/items.xml?recordIdentifier=008070482
+# DC records like the one returned using the above call to LibraryCloud can be concatenated into a single file and then processed
+# using the following script to create a single column text file of HOLLIS ids.
+#
+grep -o 'librarycloud:.[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' ALL.xml | sed s/librarycloud:.// > ALL.txt
+# Are HOLLIS system ids always nine digits long?
