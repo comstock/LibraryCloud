@@ -4,8 +4,9 @@
 import os, sys
 import re
 import time
-#Feeding in a list of file-extentions -- one for each occurance of a file-type in a file system, produce a list of file types (file extentions) with no duplicates.
-#grep --only-matching -E "[a-z,A-Z,0-9]+\.[a-z,A-Z,0-9][a-z,A-Z,0-9][a-z,A-Z,0-9]\n" fulllist.txt > list_of_file_extentions.txt ; grep -o '[a-z,A-Z,0-9]\.[a-z,A-Z][a-z,A-Z][a-z,A-Z]$' list_of_extensions.txt | sed 's/[a-z,A-Z,0-9]\.//' | sed 's/\s$//' > list.txt
+from collections import Counter;
+
+# sed "s/.*\<DIR\>.*//"g fulllist.txt | sed "s/.*Directory of.*//"g | grep --only-matching -E "[a-z,A-Z,0-9]\.[a-z,A-Z,0-9]{3,4}\s$" | grep --only-matching -E "[a-z,A-Z,0-9]{3,4}\s$" > list.txt; perl -p -i -e "tr/A-Z/a-z/" list.txt
 
 sourceFile = "list.txt"
 directory = "/home/comstock/Documents/python"
@@ -13,15 +14,22 @@ inputFilename = directory + "/" + sourceFile
 
 print "DEBUG: Input filename = " + inputFilename
 out = open ("fileTypesOut.txt",'w')
+outCount = open ("fileTypeCounts.txt",'w')
 gaggle ={""}
 
+cnt = Counter ();
+
+# the following counts occurance of the 3- or 4-character file extensions in inputFilename
+for line in open (inputFilename, 'r'):
+  for word in line.split ():
+    cnt [word] += 1
+
+# print(cnt, file=outCount)
+print >> outCount, cnt
+# outCount.write(cnt)
+# the following generates a list of file types found in list.txt, which has become uneccessary as the counting routine above generates a list of filetypes found, and the counts for each.
 with open(inputFilename,'r') as jello:
     for line in jello:
-        # print line
-        # if re.search("\.[a-z,A-Z,0-9][a-z,A-Z,0-9][a-z,A-Z,0-9]\s", f): print line
-        # if re.match('\.[a-z,A-z][a-z,A-z][a-z,A-z]', line): print out.write(line)
-#         if re.match(".\w\w\w", line): print line
-        # if re.findall(".\w\w\w", line): print line
-        line = line.rstrip()
+        line = line.rstrip()       
         gaggle.add(line)        
 out.write('\n'.join(gaggle))
