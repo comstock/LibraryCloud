@@ -35,5 +35,5 @@ echo "</body><hr /></html>" >> index.html
 
 ## Build individual web pages for individual images
 
-while read line; do echo "<html><head><title>$line</title></head><body><img src=\"$line\" /></body></html>" > $line.html;done < filelist.txt
+while read line; do echo "<html><head><title>$line</title></head><body><img src=\"$line\" /><hr/><a href=\"index.html\">Back</a></body></html>" > $line.html;done < filelist.txt
 
