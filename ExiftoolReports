@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Run from within a directory of JPG images to produce a webpage with all of the images embedded.
+# Run from within a directory to generate technical metadata reports for specified image files using Exiftool
 #
 
 # generate list of JPG files in current directory
