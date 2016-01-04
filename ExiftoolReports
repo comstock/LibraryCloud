@@ -7,7 +7,7 @@
 # generate list of JPG files in current directory
 # WORKS #ls -1 *.* > filelist.txt
 
-ls -1 | egrep './.[jpg|gif|tif|pdf|jpf|jp2|png]'
+ls -1 | egrep './.[jpg|gif|tif|pdf|jpf|jp2|png]' > filelist.txt
 
 #
 # TEST #while read line; do echo "$line"; done < filelist.txt
