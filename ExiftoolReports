@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#
+# Run from within a directory of JPG images to produce a webpage with all of the images embedded.
+#
+
+# generate list of JPG files in current directory
+# WORKS #ls -1 *.* > filelist.txt
+
+ls -1 | egrep './.[jpg|gif|tif|pdf|jpf|jp2|png]'
+
+#
+# TEST #while read line; do echo "$line"; done < filelist.txt
+
+while read line; do exiftool $line > $line.exiftool.txt; done < filelist.txt
