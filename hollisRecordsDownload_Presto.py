@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import pycurl
+# Note: Import the PyCurl module with the [ apt-get install python-pycurl ] command.
 #import codecs
 import os, sys
 import re
