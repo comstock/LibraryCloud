@@ -15,12 +15,12 @@ from StringIO import StringIO
 fileExtention = "xml"
 recordFormat = "mods/" #cite,dc,mods,marc
 source = "hollis/" #hollis,via,journal
-inputFilename = "/home/comstock/Documents/python/data/HYL_rubbings._20150707_hollis_ids.tsv"
+inputFilename = "/home/elvis/hollis.txt" # Input = single column list of hollis ids
 presto_call = ""
 SingleID = "XXX"
 presto_stem = "http://webservices.lib.harvard.edu/rest/" #http://webservices.lib.harvard.edu/rest/{record_format}/{source}/{id}
 #hollisRecordsStem = "/home/comstock/Documents/python/data/hollisRecords" + "_"
-hollisRecordsStem = "/home/comstock/Documents/python/data/output/Presto/"
+hollisRecordsStem = "/home/elvis/"
 
 with open(inputFilename,'r') as hollisList:
     for line in hollisList:
